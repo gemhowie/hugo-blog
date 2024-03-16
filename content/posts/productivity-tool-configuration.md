@@ -792,6 +792,7 @@ opt.relativenumber = false
 opt.undofile = false
 opt.undolevels = 1000
 g.python3_host_prog = "~/.virtualenvs/nvim_venv/bin/python3"
+opt.clipboard = "unnamedplus"
 ```
 
 
