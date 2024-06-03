@@ -58,18 +58,18 @@ wsl --list --online
 # 不指定则默认安装最新的Ubuntu
 wsl --install
 # 安装指定分发版本
-wsl --install Ubuntu-22.04
+wsl --install Ubuntu-24.04
 
 # 将现有的WSL转换为WSL2
-wsl --set-version Ubuntu-22.04 2
+wsl --set-version Ubuntu-24.04 2
 # 将现有的WSL2转换为WSL
-wsl --set-version Ubuntu-22.04 1
+wsl --set-version Ubuntu-24.04 1
 
 # 强制停止运行
 wsl --shutdown
 
 # 卸载分发
-wsl --unregister Ubuntu-22.04
+wsl --unregister Ubuntu-24.04
 ```
 
 安装完成后，会提示创建一个用户，默认会加入sudo组
@@ -146,7 +146,7 @@ sparseVhd=true
 
 运行 `wsl --manage 发行版名字 --set-sparse true` 启用稀疏 VHD 允许 WSL2 的硬盘空间自动回收
 
-```
+```powershell
 # 配置硬盘空间自动回收需要先停掉wsl
 wsl --shutdown
 
@@ -197,12 +197,16 @@ ping www.baidu.com
 
 
 
-## 配置ubuntu 22.04 jammy软件源
+## 配置软件源
+
+### Ubuntu 22.04 jammy
 
 ```shell
 # 清华大学开源软件镜像站使用帮助 https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/
 
 # 替换为清华源
+
+sudo mv /etc/apt/sources.list{,.bak}
 
 sudo bash -c 'echo "# 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
 deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy main restricted universe multiverse
@@ -219,6 +223,64 @@ deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-security main restricted 
 # deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-proposed main restricted universe multiverse
 # # deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ jammy-proposed main restricted universe multiverse
 " > /etc/apt/sources.list'
+
+# 更新软件源
+sudo apt update
+
+# 更新可升级的软件
+sudo apt upgrade
+```
+
+### Ubuntu 24.04 noble DEB822 格式
+
+```shell
+# 清华大学开源软件镜像站使用帮助 https://mirrors.tuna.tsinghua.edu.cn/help/ubuntu/
+
+# 替换为清华源
+# 在 Ubuntu 24.04 之前，Ubuntu 的软件源配置文件使用传统的 One-Line-Style，路径为 /etc/apt/sources.list；从 Ubuntu 24.04 开始，Ubuntu 的软件源配置文件变更为 DEB822 格式，路径为 /etc/apt/sources.list.d/ubuntu.sources
+
+sudo mv /etc/apt/sources.list.d/ubuntu.sources{,.bak}
+
+sudo bash -c 'echo "Types: deb
+URIs: https://mirrors.tuna.tsinghua.edu.cn/ubuntu
+Suites: noble noble-updates noble-backports
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+# 默认注释了源码镜像以提高 apt update 速度，如有需要可自行取消注释
+# Types: deb-src
+# URIs: https://mirrors.tuna.tsinghua.edu.cn/ubuntu
+# Suites: noble noble-updates noble-backports
+# Components: main restricted universe multiverse
+# Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+# 以下安全更新软件源包含了官方源与镜像站配置，如有需要可自行修改注释切换
+Types: deb
+URIs: http://security.ubuntu.com/ubuntu/
+Suites: noble-security
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+# Types: deb-src
+# URIs: http://security.ubuntu.com/ubuntu/
+# Suites: noble-security
+# Components: main restricted universe multiverse
+# Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+# 预发布软件源，不建议启用
+
+# Types: deb
+# URIs: https://mirrors.tuna.tsinghua.edu.cn/ubuntu
+# Suites: noble-proposed
+# Components: main restricted universe multiverse
+# Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+
+# # Types: deb-src
+# # URIs: https://mirrors.tuna.tsinghua.edu.cn/ubuntu
+# # Suites: noble-proposed
+# # Components: main restricted universe multiverse
+# # Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+" > /etc/apt/sources.list.d/ubuntu.sources'
 
 # 更新软件源
 sudo apt update
@@ -267,6 +329,8 @@ sudo apt install libfuse2
 
 ubuntu22.04自带Python 3.10.12，但没有pip，需要手动安装
 
+ubuntu24.04自带Python 3.12.3，也没有pip，需要手动安装
+
 ```shell
 sudo apt install python3-pip
 ```
@@ -275,7 +339,7 @@ sudo apt install python3-pip
 
 ## 配置pip源
 
-```
+```shell
 # 设置pip使用清华源
 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 # 设置信任host，当pip源为http网站时使用，https可以不设置
@@ -368,8 +432,9 @@ git config --global --list
 https://github.com/dandavison/delta/releases
 
 ```shell
-wget https://github.com/dandavison/delta/releases/download/0.16.5/git-delta_0.16.5_amd64.deb
-sudo dpkg -i git-delta_0.16.5_amd64.deb
+GIT_DELTA_VERSION=$(curl -s "https://api.github.com/repos/dandavison/delta/releases/latest" | grep -Po '"tag_name": "\K[^"]*')
+wget "https://github.com/dandavison/delta/releases/download/${GIT_DELTA_VERSION}/git-delta_${GIT_DELTA_VERSION}_amd64.deb"
+sudo dpkg -i git-delta_${GIT_DELTA_VERSION}_amd64.deb
 ```
 
 
@@ -623,6 +688,9 @@ https://virtualenvwrapper.readthedocs.io/en/latest/install.html
 ```shell
 sudo pip3 install virtualenvwrapper
 
+# Ubuntu24.04版本会有告警提示，但是virtualenvwrapper本来就应该在全局环境安装的，所以指定--break-system-packages进行安装
+sudo pip3 install virtualenvwrapper --break-system-packages
+
 which virtualenvwrapper.sh
 # /usr/local/bin/virtualenvwrapper.sh
 
@@ -668,12 +736,12 @@ https://nodejs.org/en/download
 下载**Linux Binaries** **(x64)**
 
 ```shell
-wget https://nodejs.org/dist/v20.11.1/node-v20.11.1-linux-x64.tar.xz
-tar -xvf node-v20.11.1-linux-x64.tar.xz
-sudo mv node-v20.11.1-linux-x64 /opt/
-sudo chown -R root:root /opt/node-v20.11.1-linux-x64
-sudo ln -s /opt/node-v20.11.1-linux-x64/bin/node /usr/local/bin/
-sudo ln -s /opt/node-v20.11.1-linux-x64/bin/npm /usr/local/bin/
+wget https://nodejs.org/dist/v20.14.0/node-v20.14.0-linux-x64.tar.xz
+tar -xvf node-v20.14.0-linux-x64.tar.xz
+sudo mv node-v20.14.0-linux-x64 /opt/
+sudo chown -R root:root /opt/node-v20.14.0-linux-x64
+sudo ln -s /opt/node-v20.14.0-linux-x64/bin/node /usr/local/bin/
+sudo ln -s /opt/node-v20.14.0-linux-x64/bin/npm /usr/local/bin/
 node -v
 npm -v
 ```
@@ -807,7 +875,7 @@ return {
     "folke/tokyonight.nvim",
     lazy = true,
     opts = { style = "storm" },
-  }
+  },
 }
 ```
 
@@ -850,25 +918,19 @@ return {
 return {
   {
     "linux-cultist/venv-selector.nvim",
-    -- cmd = { "VenvSelect", "VenvSelectCached", "VenvSelectCurrent" },
-    opts = function(_, opts)
-      if require("lazyvim.util").has("nvim-dap-python") then
-        opts.dap_enabled = true
-      end
-      return vim.tbl_deep_extend("force", opts, {
-        name = {
-          "venv",
-          ".venv",
-          "env",
-          ".env",
-          "nvim_venv",
-        },
-      })
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "mfussenegger/nvim-dap",
+      "mfussenegger/nvim-dap-python", --optional
+      { "nvim-telescope/telescope.nvim", branch = "0.1.x", dependencies = { "nvim-lua/plenary.nvim" } },
+    },
+    lazy = false,
+    branch = "regexp", -- This is the regexp branch, use this for the new version
+    config = function()
+      require("venv-selector").setup()
     end,
     keys = {
-      { "<leader>cv", "<cmd>:VenvSelect<cr>", desc = "Select VirtualEnv" },
-      { "<leader>cc", "<cmd>:VenvSelectCached<cr>", desc = "Select VirtualEnv Cached" },
-      -- { "<leader>cn", "<cmd>:VenvSelectCurrent<cr>", desc = "Current Select VirtualEnv" },
+      { "<leader>cv", "<cmd>VenvSelect<cr>", desc = "Select VirtualEnv" },
     },
   },
 }
@@ -917,28 +979,13 @@ return {
 
 ### 配置Supertab
 
-`vim ~/.config/nvim/lua/plugins/LuaSnip.lua`
-
-```lua
-return {
-  {
-    "L3MON4D3/LuaSnip",
-    keys = function()
-      return {}
-    end,
-  }
-}
-```
-
 `vim ~/.config/nvim/lua/plugins/nvim-cmp.lua`
 
 ```lua
 return {
   {
     "hrsh7th/nvim-cmp",
-    dependencies = {
-      "hrsh7th/cmp-emoji",
-    },
+    dependencies = { "hrsh7th/cmp-emoji" },
     ---@param opts cmp.ConfigSchema
     opts = function(_, opts)
       local has_words_before = function()
@@ -946,8 +993,8 @@ return {
         local line, col = unpack(vim.api.nvim_win_get_cursor(0))
         return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
       end
+      table.insert(opts.sources, { name = "emoji" })
 
-      local luasnip = require("luasnip")
       local cmp = require("cmp")
 
       opts.mapping = vim.tbl_extend("force", opts.mapping, {
@@ -955,10 +1002,10 @@ return {
           if cmp.visible() then
             -- You could replace select_next_item() with confirm({ select = true }) to get VS Code autocompletion behavior
             cmp.select_next_item()
-            -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable()
-            -- this way you will only jump inside the snippet region
-          elseif luasnip.expand_or_jumpable() then
-            luasnip.expand_or_jump()
+          elseif vim.snippet.active({ direction = 1 }) then
+            vim.schedule(function()
+              vim.snippet.jump(1)
+            end)
           elseif has_words_before() then
             cmp.complete()
           else
@@ -968,15 +1015,17 @@ return {
         ["<S-Tab>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_prev_item()
-          elseif luasnip.jumpable(-1) then
-            luasnip.jump(-1)
+          elseif vim.snippet.active({ direction = -1 }) then
+            vim.schedule(function()
+              vim.snippet.jump(-1)
+            end)
           else
             fallback()
           end
         end, { "i", "s" }),
       })
     end,
-  }
+  },
 }
 ```
 
@@ -1088,14 +1137,15 @@ return {
 ```json
 {
   "extras": [
+    "lazyvim.plugins.extras.dap.core",
     "lazyvim.plugins.extras.editor.aerial",
     "lazyvim.plugins.extras.formatting.black",
     "lazyvim.plugins.extras.lang.python"
   ],
   "news": {
-    "NEWS.md": "2123"
+    "NEWS.md": "5204"
   },
-  "version": 2
+  "version": 6
 }
 ```
 
