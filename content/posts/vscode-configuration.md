@@ -187,6 +187,26 @@ ctrl + shift + p 关键字 Open User Settings (JSON)
     },
     {
       "before": [
+        ">"
+      ],
+      "after": [ // 缩进后再次选中之前选中的内容
+        ">",
+        "g",
+        "v"
+      ]
+    },
+    {
+      "before": [
+        "<"
+      ],
+      "after": [
+        "<",
+        "g",
+        "v"
+      ]
+    },
+    {
+      "before": [
         "<leader>",
         "s", // search
         "g" // grep
@@ -374,7 +394,7 @@ ctrl + shift + p 关键字 Open User Settings (JSON)
         "q" // quit
       ],
       "commands": [
-        "workbench.action.closeGroup"  // 关闭当前Group，只剩一个Group时无效
+        "workbench.action.closeGroup" // 关闭当前Group，只剩一个Group时无效
       ]
     },
     {
@@ -494,7 +514,7 @@ ctrl + shift + p 关键字 Open User Settings (JSON)
         "CR"
       ],
       "commands": [
-        ":noh"  // 关闭高亮搜索
+        ":noh" // 关闭高亮搜索
       ],
     },
   ],
