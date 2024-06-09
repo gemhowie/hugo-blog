@@ -1,7 +1,7 @@
 +++
 title = 'Productivity Tool Configuration'
 date = 2023-11-12T11:10:11+08:00
-lastmod = 2024-06-09T18:34:00+08:00
+lastmod = 2024-06-10T02:17:00+08:00
 draft = false
 +++
 
@@ -737,12 +737,15 @@ https://nodejs.org/en/download
 下载**Linux Binaries** **(x64)**
 
 ```shell
-wget https://nodejs.org/dist/v20.14.0/node-v20.14.0-linux-x64.tar.xz
-tar -xvf node-v20.14.0-linux-x64.tar.xz
-sudo mv node-v20.14.0-linux-x64 /opt/
-sudo chown -R root:root /opt/node-v20.14.0-linux-x64
-sudo ln -s /opt/node-v20.14.0-linux-x64/bin/node /usr/local/bin/
-sudo ln -s /opt/node-v20.14.0-linux-x64/bin/npm /usr/local/bin/
+sudo rm -rf /opt/node* /usr/local/bin/node /usr/local/bin/npm
+
+NODDJS_VERSION=$(curl -s "https://api.github.com/repos/nodejs/node/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+wget "https://nodejs.org/dist/v${NODDJS_VERSION}/node-v${NODDJS_VERSION}-linux-x64.tar.xz"
+tar -xvf node-v${NODDJS_VERSION}-linux-x64.tar.xz
+sudo mv node-v${NODDJS_VERSION}-linux-x64 /opt/
+sudo chown -R root:root /opt/node-v${NODDJS_VERSION}-linux-x64
+sudo ln -s /opt/node-v${NODDJS_VERSION}-linux-x64/bin/node /usr/local/bin/
+sudo ln -s /opt/node-v${NODDJS_VERSION}-linux-x64/bin/npm /usr/local/bin/
 node -v
 npm -v
 ```
@@ -761,6 +764,7 @@ sudo npm config set registry https://registry.npmjs.org
 
 # 安装yarn
 sudo npm install -g yarn
+sudo rm /usr/local/bin/yarn
 sudo ln -s `whereis yarn | cut -d' ' -f2` /usr/local/bin/
 
 # 查看yarn源
