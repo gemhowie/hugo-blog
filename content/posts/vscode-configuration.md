@@ -42,31 +42,20 @@ ctrl + shift + p 关键字 open keyboard shortcuts (JSON)
 // Place your key bindings in this file to override the defaults
 [
   {
-    "key": "F12",
-    "command": "workbench.action.togglePanel", // 切换面板可见性
+    "key": "Ctrl+H",
+    "command": "workbench.action.navigateLeft",
   },
   {
-    "key": "Ctrl+]",
-    // "command": "editor.action.goToTypeDefinition"
-    "command": "editor.action.revealDefinition", // 跳转到定义
+    "key": "Ctrl+J",
+    "command": "workbench.action.navigateDown",
   },
   {
-    "key": "Ctrl+T",
-    "command": "workbench.action.navigateBack", // 返回上一步
+    "key": "Ctrl+K",
+    "command": "workbench.action.navigateUp",
   },
   {
-    "key": "Ctrl+F12",
-    "command": "workbench.action.toggleMaximizedPanel",
-  },
-  {
-    "key": "Ctrl+Shift+\\",
-    "command": "extension.matchitSelectItems",
-    "when": "editorTextFocus"
-  },
-  {
-    "key": "Ctrl+Shift+/",
-    "command": "extension.matchitDeleteItems",
-    "when": "editorTextFocus"
+    "key": "Ctrl+L",
+    "command": "workbench.action.navigateRight",
   },
   {
     "key": "Shift+H",
@@ -80,6 +69,33 @@ ctrl + shift + p 关键字 open keyboard shortcuts (JSON)
     "command": "workbench.action.nextEditorInGroup",
     // "when": "editorTextFocus && vim.mode != 'Insert' && vim.mode != 'Replace' && !(vim.mode =~ /Visual/)",
     "when": "editorTextFocus && vim.active && vim.mode == 'Normal'",
+  },
+  {
+    "key": "F12",
+    "command": "workbench.action.togglePanel", // 切换面板可见性
+  },
+  {
+    "key": "Ctrl+F12",
+    "command": "workbench.action.toggleMaximizedPanel",  // 切换最大化面板
+  },
+  {
+    "key": "Ctrl+]",
+    // "command": "editor.action.goToTypeDefinition"
+    "command": "editor.action.revealDefinition", // 跳转到定义
+  },
+  {
+    "key": "Ctrl+T",
+    "command": "workbench.action.navigateBack", // 返回上一步
+  },
+  {
+    "key": "Ctrl+Shift+\\",
+    "command": "extension.matchitSelectItems",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "Ctrl+Shift+/",
+    "command": "extension.matchitDeleteItems",
+    "when": "editorTextFocus"
   },
 ]
 ```
@@ -446,42 +462,42 @@ ctrl + shift + p 关键字 Open User Settings (JSON)
         "workbench.action.toggleZenMode"
       ]
     },
-    {
-      "before": [
-        "<C-h>",
-      ],
-      "after": [
-        "<C-w>",
-        "h"
-      ]
-    },
-    {
-      "before": [
-        "<C-j>",
-      ],
-      "after": [
-        "<C-w>",
-        "j"
-      ]
-    },
-    {
-      "before": [
-        "<C-k>",
-      ],
-      "after": [
-        "<C-w>",
-        "k"
-      ]
-    },
-    {
-      "before": [
-        "<C-l>",
-      ],
-      "after": [
-        "<C-w>",
-        "l"
-      ]
-    },
+    // {
+    //   "before": [
+    //     "<C-h>",
+    //   ],
+    //   "after": [
+    //     "<C-w>",
+    //     "h"
+    //   ]
+    // },
+    // {
+    //   "before": [
+    //     "<C-j>",
+    //   ],
+    //   "after": [
+    //     "<C-w>",
+    //     "j"
+    //   ]
+    // },
+    // {
+    //   "before": [
+    //     "<C-k>",
+    //   ],
+    //   "after": [
+    //     "<C-w>",
+    //     "k"
+    //   ]
+    // },
+    // {
+    //   "before": [
+    //     "<C-l>",
+    //   ],
+    //   "after": [
+    //     "<C-w>",
+    //     "l"
+    //   ]
+    // },
     {
       "before": [
         "<leader>",
