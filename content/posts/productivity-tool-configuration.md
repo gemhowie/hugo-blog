@@ -1,8 +1,9 @@
 +++
 title = 'Productivity Tool Configuration'
 date = 2023-11-12T11:10:11+08:00
-lastmod = 2024-06-10T02:17:00+08:00
+lastmod = 2024-06-10T12:00:00+08:00
 draft = false
+
 +++
 
 ## 安装WSL2
@@ -763,8 +764,8 @@ sudo npm config set registry https://registry.npmmirror.com
 sudo npm config set registry https://registry.npmjs.org
 
 # 安装yarn
-sudo npm install -g yarn
 sudo rm /usr/local/bin/yarn
+sudo npm install -g yarn
 sudo ln -s `whereis yarn | cut -d' ' -f2` /usr/local/bin/
 
 # 查看yarn源
@@ -1125,6 +1126,7 @@ return {
         "ruff-lsp",
         "black",
         "mypy",
+        "debugpy",
         "clangd",
         "clang-format",
       },
