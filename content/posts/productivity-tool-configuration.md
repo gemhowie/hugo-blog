@@ -1,7 +1,7 @@
 +++
 title = 'Productivity Tool Configuration'
 date = 2023-11-12T11:10:11+08:00
-lastmod = 2024-06-10T12:00:00+08:00
+lastmod = 2024-07-23T22:37:00+08:00
 draft = false
 
 +++
@@ -819,6 +819,7 @@ rm -rf ~/.config/nvim/.git
 
 # 下载自己的配置
 git clone git@github.com:gemhowie/nvim.git ~/.config/nvim
+git clone https://github.com/gemhowie/nvim.git ~/.config/nvim
 
 # 恢复配置文件后启动
 nvim
@@ -1098,8 +1099,8 @@ return {
   {
     "stevearc/conform.nvim",
     opts = {
-      format = {
-        timeout_ms = 10000,
+      default_format_opts = {
+        timeout_ms = 20000,
       },
     },
   },
