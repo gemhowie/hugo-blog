@@ -733,20 +733,29 @@ deactivate
 
 ## 安装nodejs
 
-https://nodejs.org/en/download
-
-下载**Linux Binaries** **(x64)**
-
+### 通过nvm管理器安装
 ```shell
-sudo rm -rf /opt/node* /usr/local/bin/node /usr/local/bin/npm
+# 1. 动态获取 nvm 最新版本号 (从 GitHub API 读取最新 Tag)
+NVM_LATEST_VERSION=$(curl -s "https://api.github.com/repos/nvm-sh/nvm/releases/latest" | grep -Po '"tag_name": "\K[^"]*')
 
-NODEJS_VERSION=$(curl -s "https://api.github.com/repos/nodejs/node/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-wget "https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION}-linux-x64.tar.xz"
-tar -xvf node-v${NODEJS_VERSION}-linux-x64.tar.xz
-sudo mv node-v${NODEJS_VERSION}-linux-x64 /opt/
-sudo chown -R root:root /opt/node-v${NODEJS_VERSION}-linux-x64
-sudo ln -s /opt/node-v${NODEJS_VERSION}-linux-x64/bin/node /usr/local/bin/
-sudo ln -s /opt/node-v${NODEJS_VERSION}-linux-x64/bin/npm /usr/local/bin/
+# 2. 打印版本确认一下 (比如 v0.40.1)
+echo "检测到最新 NVM 版本: $NVM_LATEST_VERSION"
+
+# 3. 使用获取到的版本号进行安装
+curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/${NVM_LATEST_VERSION}/install.sh" | bash
+
+# 4. 刷新当前 Shell 环境使 nvm 立即生效
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# 5. 验证安装结果
+nvm --version
+
+# 安装并使用最新的 LTS 版本
+nvm install --lts
+nvm use --lts
+
+# 验证 node
 node -v
 npm -v
 ```
@@ -754,26 +763,24 @@ npm -v
 
 
 ### 配置npm/yarn源
-
 ```shell
 # 查看npm源
-sudo npm config get registry
+npm config get registry
 # npm更换淘宝源
-sudo npm config set registry https://registry.npmmirror.com
+npm config set registry https://registry.npmmirror.com
 # 恢复官方源
-sudo npm config set registry https://registry.npmjs.org
+npm config set registry https://registry.npmjs.org
 
 # 安装yarn
-sudo rm /usr/local/bin/yarn
-sudo npm install -g yarn
-sudo ln -s `whereis yarn | cut -d' ' -f2` /usr/local/bin/
+npm install -g yarn
+ln -s `whereis yarn | cut -d' ' -f2` /usr/local/bin/
 
 # 查看yarn源
-sudo yarn config get registry
+yarn config get registry
 # yarn更换淘宝源
-sudo yarn config set registry https://registry.npmmirror.com
+yarn config set registry https://registry.npmmirror.com
 # yarn恢复官方源
-sudo yarn config set registry https://registry.yarnpkg.com
+yarn config set registry https://registry.yarnpkg.com
 
 
 # 普通用户更换淘宝源
@@ -791,7 +798,7 @@ npm cache verify
 ### npm安装neovim包
 
 ```shell
-sudo npm install -g neovim
+npm install -g neovim
 ```
 
 
