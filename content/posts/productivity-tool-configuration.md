@@ -740,13 +740,13 @@ https://nodejs.org/en/download
 ```shell
 sudo rm -rf /opt/node* /usr/local/bin/node /usr/local/bin/npm
 
-NODDJS_VERSION=$(curl -s "https://api.github.com/repos/nodejs/node/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
-wget "https://nodejs.org/dist/v${NODDJS_VERSION}/node-v${NODDJS_VERSION}-linux-x64.tar.xz"
-tar -xvf node-v${NODDJS_VERSION}-linux-x64.tar.xz
-sudo mv node-v${NODDJS_VERSION}-linux-x64 /opt/
-sudo chown -R root:root /opt/node-v${NODDJS_VERSION}-linux-x64
-sudo ln -s /opt/node-v${NODDJS_VERSION}-linux-x64/bin/node /usr/local/bin/
-sudo ln -s /opt/node-v${NODDJS_VERSION}-linux-x64/bin/npm /usr/local/bin/
+NODEJS_VERSION=$(curl -s "https://api.github.com/repos/nodejs/node/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+wget "https://nodejs.org/dist/v${NODEJS_VERSION}/node-v${NODEJS_VERSION}-linux-x64.tar.xz"
+tar -xvf node-v${NODEJS_VERSION}-linux-x64.tar.xz
+sudo mv node-v${NODEJS_VERSION}-linux-x64 /opt/
+sudo chown -R root:root /opt/node-v${NODEJS_VERSION}-linux-x64
+sudo ln -s /opt/node-v${NODEJS_VERSION}-linux-x64/bin/node /usr/local/bin/
+sudo ln -s /opt/node-v${NODEJS_VERSION}-linux-x64/bin/npm /usr/local/bin/
 node -v
 npm -v
 ```
