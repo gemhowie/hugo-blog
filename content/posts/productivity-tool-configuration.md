@@ -305,21 +305,21 @@ ssh-keygen
 
 https://github.com/neovim/neovim/tags
 
-下载nvim-linux64.tar.gz，不建议用appimage版本，有些运行文件如会话等会保存在临时目录中，恢复程序和会话的插件无法正常工作
+下载nvim-linux-x86_64.tar.gz，不建议用appimage版本，有些运行文件如会话等会保存在临时目录中，恢复程序和会话的插件无法正常工作
 
 ```shell
-wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz
-tar -zxvf nvim-linux64.tar.gz
+wget https://github.com/neovim/neovim/releases/download/stable/nvim-linux-x86_64.tar.gz
+tar -zxvf nvim-linux-x86_64.tar.gz
 
 # 只给当前用户安装
-mv nvim-linux64 ~/.local/share/nvim-linux64
+mv nvim-linux-x86_64 ~/.local/share/nvim-linux-x86_64
 mkdir -p ~/.local/bin
-ln -s ~/.local/share/nvim-linux64/bin/nvim ~/.local/bin/nvim
+ln -s ~/.local/share/nvim-linux-x86_64/bin/nvim ~/.local/bin/nvim
 
 # 给所有用户安装
-sudo mv nvim-linux64 /usr/local/share/nvim-linux64
-sudo chown -R root:root /usr/local/share/nvim-linux64
-sudo ln -s /usr/local/share/nvim-linux64/bin/nvim /usr/local/bin/nvim
+sudo mv nvim-linux-x86_64 /usr/local/share/nvim-linux-x86_64
+sudo chown -R root:root /usr/local/share/nvim-linux-x86_64
+sudo ln -s /usr/local/share/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim
 
 # WSL运行appimage二进制依赖libfuse2
 sudo apt install libfuse2
